@@ -4,23 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "bpPiece.generated.h"
+#include "PuzzlePiece.generated.h"
 
 UCLASS()
-class MGP_2526_API AbpPiece : public AActor
+class MGP_2526_API APuzzlePiece : public AActor
 {
 	GENERATED_BODY()
 	
+	
+
 public:	
 	// Sets default values for this actor's properties
-	AbpPiece();
+	APuzzlePiece();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere);
+	UStaticMeshComponent* StaticMeshComponent;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	
+	
 
 };
