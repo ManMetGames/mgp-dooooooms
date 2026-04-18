@@ -3,7 +3,10 @@
 
 #include "PuzzlePiece.h"
 #include "Components/StaticMeshComponent.h"
-
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include <iostream>
+using namespace std;
 // Sets default values
 APuzzlePiece::APuzzlePiece()
 {
@@ -14,13 +17,27 @@ APuzzlePiece::APuzzlePiece()
 	SetRootComponent(StaticMeshComponent);
 	StaticMeshComponent->SetWorldScale3D(FVector(0.2, 0.1, 0.025));
 	StaticMeshComponent->SetStaticMesh(Piece.Object);
+
 }
+
+
+void APuzzlePiece::Grab()
+{
+	std::cout << "Clicked";
+
+
+}
+
+
 
 // Called when the game starts or when spawned
 void APuzzlePiece::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	EnableInput(GetWorld()->GetFirstPlayerController());
+	if (InputComponent) {
+		InputComponent->BindAction("Click", IE_Pressed, this, &APuzzlePiece::Grab);
+	}
 }
 
 // Called every frame
