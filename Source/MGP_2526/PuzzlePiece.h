@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "PuzzlePiece.generated.h"
 
+class UInputAction;
+
 UCLASS()
-class MGP_2526_API APuzzlePiece : public AActor
+class MGP_2526_API APuzzlePiece : public ACharacter
 {
 	GENERATED_BODY()
 	
@@ -17,24 +19,27 @@ public:
 	// Sets default values for this actor's properties
 	APuzzlePiece();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* Click;
-
-
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* Click;
+	
 
 
 protected:
-	void Grab();
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* StaticMeshComponent;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UStaticMeshComponent* Cube;
+
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	
-	
+	/*UFUNCTION()*/
+	void Grab();
 
 };
