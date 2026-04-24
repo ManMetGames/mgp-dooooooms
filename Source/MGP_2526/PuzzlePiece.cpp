@@ -25,7 +25,7 @@ APuzzlePiece::APuzzlePiece()
 void APuzzlePiece::Grab()
 {
 	if (bIsClicked) {
-		UE_LOG(LogTemp, Warning, TEXT("Clicked"));
+		UE_LOG(LogTemp, Warning, TEXT("Should be picked up now."));
 
 	}
 

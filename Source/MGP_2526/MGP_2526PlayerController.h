@@ -8,7 +8,7 @@
 
 class UInputMappingContext;
 class UUserWidget;
-
+class UInputAction;
 /**
  *  Basic PlayerController class for a third person game
  *  Manages input mappings
@@ -18,11 +18,22 @@ class AMGP_2526PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+
+public: 
+
+	//MGP_2526PlayerController();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClickAction;
+
 protected:
 
 	/** Input Mapping Contexts */
 	UPROPERTY(EditAnywhere, Category ="Input|Input Mappings")
 	TArray<UInputMappingContext*> DefaultMappingContexts;
+
+	void OnClicked();
 
 	/** Input Mapping Contexts */
 	UPROPERTY(EditAnywhere, Category="Input|Input Mappings")
@@ -40,5 +51,6 @@ protected:
 
 	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
-
+private:
+	float FollowTime;
 };
