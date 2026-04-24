@@ -27,6 +27,7 @@ protected:
 	void Grab();
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	bool bIsClicked;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* StaticMeshComponent;
 
