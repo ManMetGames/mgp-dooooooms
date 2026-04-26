@@ -24,8 +24,8 @@ public:
 	//MGP_2526PlayerController();
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* ClickAction;
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClickAction;*/
 
 protected:
 
@@ -33,7 +33,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input|Input Mappings")
 	TArray<UInputMappingContext*> DefaultMappingContexts;
 
-	void OnClicked();
+	/*void OnClicked();*/
 
 	/** Input Mapping Contexts */
 	UPROPERTY(EditAnywhere, Category="Input|Input Mappings")
@@ -51,6 +51,6 @@ protected:
 
 	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
-private:
-	float FollowTime;
+//private:
+//	float FollowTime;
 };
