@@ -10,7 +10,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MGP_2526.h"
 #include "PuzzlePiece.h"
-
+	
 
 #include "Widgets/Input/SVirtualJoystick.h"
 class UInputAction;
@@ -39,37 +39,7 @@ void AMGP_2526PlayerController::BeginPlay()
 	}
 }
 
-//void AMGP_2526PlayerController::OnClicked()
-//{
-	//// We flag that the input is being pressed
-	//FollowTime += GetWorld()->GetDeltaSeconds();
 
-	//// We look for the location in the world where the player has pressed the input
-	//FHitResult Hit;
-	//bool bHitSuccessful = false;
-
-
-	//UE_LOG(LogTemp, Warning, TEXT("Clicked!"));
-	//bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-
-	//if (Hit.GetActor()->ActorHasTag("Piece"))
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Clicked on a piece."));
-	//	APuzzlePiece* HitPiece = Cast<APuzzlePiece>(Hit.GetActor());
-	//	if (HitPiece) {
-	//		if (HitPiece->bIsClicked) {
-
-	//			HitPiece->bIsClicked = true;
-	//		}
-	//		else
-	//		{
-	//			HitPiece->bIsClicked = false;
-	//		}
-	//	}
-	//	UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
-	//}
-
-//}
 
 
 
@@ -83,12 +53,7 @@ void AMGP_2526PlayerController::SetupInputComponent()
 		// only add IMCs for local player controllers
 		if (IsLocalPlayerController())
 		{
-			//if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
-			//{
-			//	// Setup mouse input events
-			//	EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AMGP_2526PlayerController::OnClicked);
-			//}
-			// Add Input Mapping Contexts
+
 			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 			{
 				for (UInputMappingContext* CurrentContext : DefaultMappingContexts)

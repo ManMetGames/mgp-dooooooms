@@ -17,14 +17,14 @@ public:
 	// Sets default values for this actor's properties
 	APuzzlePiece();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* Click;
+	UPROPERTY(VisibleAnywhere)
+	FVector SpawnVector;
+	FVector CurrentPos;
 
-
-
+	void Grab();
 
 protected:
-	void Grab();
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	

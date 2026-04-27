@@ -6,13 +6,10 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-//#include "GameFramework/Controller.h"
-//#include "GameFramework/PlayerController.h"
 #include "EnhancedInputComponent.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-//#include "MGP_2526.h"
 #include "PuzzlePiece.h"
 #include "MGP_2526PlayerController.h"
 
@@ -53,6 +50,8 @@ AMGP_2526Character::AMGP_2526Character()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+
 }
 
 void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -60,40 +59,37 @@ void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		// Setup mouse input events
-		//EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnClicked);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnClicked);
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnClicked);
 		UE_LOG(LogTemp, Warning, TEXT("Inputs are bound"));
 	}
-	// Set up action bindings
-	//if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-	//	
-	//	// Jumping
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
-	//	// Moving
-	//	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMGP_2526Character::Move);
-	//	EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AMGP_2526Character::Look);
-
-	//	// Looking
-	//	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMGP_2526Character::Look);
-	//}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
 }
+void AMGP_2526Character::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
+	Ctl->DeprojectMousePositionToWorld(mousepos, mousedir);
+
+}
+
+
+
+void AMGP_2526Character::BeginPlay()
+{
+	
+
+}
 
 void AMGP_2526Character::OnClicked() {
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-
 	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
 
-
-	UE_LOG(LogTemp, Warning, TEXT("Clicked!"));
 	AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
 	bHitSuccessful = Ctl->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 	if (Hit.GetActor()->ActorHasTag("Piece"))
@@ -101,16 +97,21 @@ void AMGP_2526Character::OnClicked() {
 		UE_LOG(LogTemp, Warning, TEXT("Clicked on a piece."));
 		APuzzlePiece* HitPiece = Cast<APuzzlePiece>(Hit.GetActor());
 		if (HitPiece) {
-			if (HitPiece->bIsClicked) {
+			if (HitPiece->bIsClicked==false) {
 
 				HitPiece->bIsClicked = true;
+				UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
 			}
 			else
 			{
 				HitPiece->bIsClicked = false;
+				UE_LOG(LogTemp, Warning, TEXT("Clicked is now false."));
 			}
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
+		else if (HitPiece->bIsClicked == true) {
+			HitPiece->bIsClicked = false;
+		}
+
 	}
 
 }
