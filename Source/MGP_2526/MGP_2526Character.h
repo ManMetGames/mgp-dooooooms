@@ -32,7 +32,7 @@ class AMGP_2526Character : public ACharacter
 	UCameraComponent* FollowCamera;
 	
 protected:
-
+	virtual void BeginPlay() override;
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* JumpAction;
@@ -40,6 +40,8 @@ protected:
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MoveAction;
+
+	void OnClicked();
 
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -53,6 +55,12 @@ public:
 
 	/** Constructor */
 	AMGP_2526Character();	
+
+	FVector mousepos;
+	FVector mousedir;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClickAction;
 
 protected:
 
@@ -86,11 +94,15 @@ public:
 	virtual void DoJumpEnd();
 
 public:
-
+	virtual void Tick(float DeltaTime) override;
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	float FollowTime;
+
 };
 
