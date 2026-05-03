@@ -72,8 +72,8 @@ void AMGP_2526Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
-	Ctl->DeprojectMousePositionToWorld(mousepos, mousedir);
+	//AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
+	//Ctl->DeprojectMousePositionToWorld(mousepos, mousedir);
 
 }
 
@@ -94,18 +94,22 @@ void AMGP_2526Character::OnClicked() {
 	bHitSuccessful = Ctl->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 	if (Hit.GetActor()->ActorHasTag("Piece"))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Clicked on a piece."));
+		//UE_LOG(LogTemp, Warning, TEXT("Clicked on a piece."));
 		APuzzlePiece* HitPiece = Cast<APuzzlePiece>(Hit.GetActor());
 		if (HitPiece) {
 			if (HitPiece->bIsClicked==false) {
 
 				HitPiece->bIsClicked = true;
-				UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
+				//UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
+			}
+			else if (HitPiece->bIsClicked == true) 
+			{
+				HitPiece->bIsClicked = false;
 			}
 			else
 			{
 				HitPiece->bIsClicked = false;
-				UE_LOG(LogTemp, Warning, TEXT("Clicked is now false."));
+				//UE_LOG(LogTemp, Warning, TEXT("Clicked is now false."));
 			}
 		}
 		else if (HitPiece->bIsClicked == true) {

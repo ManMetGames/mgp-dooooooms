@@ -20,7 +20,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	FVector SpawnVector;
 	FVector CurrentPos;
-
+	FVector PickupPos;
+	FVector LerpPos;
 	void Grab();
 
 protected:
@@ -33,7 +34,8 @@ protected:
 
 public:	
 	// Called every frame
+	float Timer;
 	virtual void Tick(float DeltaTime) override;
-
+	
 	bool bIsClicked;
 };
