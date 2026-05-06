@@ -24,6 +24,9 @@ public:
 	FVector LerpPos;
 	void Grab();
 
+	UPROPERTY(BlueprintReadWRite, EditAnywhere)
+	TSubclassOf<APuzzlePiece> PieceClass;
+
 protected:
 	
 	// Called when the game starts or when spawned

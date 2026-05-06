@@ -29,15 +29,14 @@ APuzzlePiece::APuzzlePiece()
 
 void APuzzlePiece::Grab()
 {
-	AMGP_2526Character* plr = Cast<AMGP_2526Character>(GetWorld()->GetFirstPlayerController()->GetCharacter());
-	//CurrentPos = plr->mousepos;
-	//CurrentPos.Y = plr->mousepos.Y + 30;
-	LerpPos = FMath::VInterpTo(CurrentPos, PickupPos, Timer, 0.25);
+
+	CurrentPos = GetActorLocation();
+	LerpPos = FMath::VInterpTo(CurrentPos, PickupPos, Timer, 0.75);
 	SetActorLocation(LerpPos);
 	UE_LOG(LogTemp, Warning, TEXT("CurrentPos: %s"), *CurrentPos.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("SpawnVector: %s"), *SpawnVector.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("PickupPos: %s"), *PickupPos.ToString());
-
+	UE_LOG(LogTemp, Warning, TEXT("Lerppos: %s"), *LerpPos.ToString());
 }
 
 
@@ -47,7 +46,7 @@ void APuzzlePiece::BeginPlay()
 {
 	Super::BeginPlay();
 	SpawnVector = GetActorLocation();
-	PickupPos = SpawnVector; PickupPos.Z = SpawnVector.Z + 20;
+	PickupPos = SpawnVector; PickupPos.Z = SpawnVector.Z + 10;
 	CurrentPos = SpawnVector;
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *SpawnVector.ToString());
 	/*EnableInput(GetWorld()->GetFirstPlayerController());
@@ -67,7 +66,8 @@ void APuzzlePiece::Tick(float DeltaTime)
 		
 	}
 	if (bIsClicked == false) {
-		LerpPos = FMath::VInterpTo(CurrentPos, SpawnVector, Timer, 0.25);
+		CurrentPos = GetActorLocation();
+		LerpPos = FMath::VInterpTo(CurrentPos, SpawnVector, Timer, 0.75);
 		SetActorLocation(LerpPos);
 	}
 }

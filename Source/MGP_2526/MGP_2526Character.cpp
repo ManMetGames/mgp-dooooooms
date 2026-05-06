@@ -12,7 +12,8 @@
 #include "InputActionValue.h"
 #include "PuzzlePiece.h"
 #include "MGP_2526PlayerController.h"
-
+#include <Kismet/GameplayStatics.h>
+#include "EngineUtils.h"
 
 AMGP_2526Character::AMGP_2526Character()
 {
@@ -82,16 +83,19 @@ void AMGP_2526Character::Tick(float DeltaTime)
 void AMGP_2526Character::BeginPlay()
 {
 	
-
+	APuzzlePiece* PreviousHit = nullptr;
 }
 
 void AMGP_2526Character::OnClicked() {
-	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
 
 	AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
+	TArray<AActor*> Pieces;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APuzzlePiece::StaticClass(), Pieces);
+	//UGameplayStatics::GetAllActorsWithTag(GetWorld(), "Piece", Pieces);
 	bHitSuccessful = Ctl->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	
 	if (Hit.GetActor()->ActorHasTag("Piece"))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Clicked on a piece."));
@@ -100,24 +104,20 @@ void AMGP_2526Character::OnClicked() {
 			if (HitPiece->bIsClicked==false) {
 
 				HitPiece->bIsClicked = true;
+				PreviousHit = HitPiece;
 				//UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
 			}
 			else if (HitPiece->bIsClicked == true) 
 			{
 				HitPiece->bIsClicked = false;
 			}
-			else
-			{
-				HitPiece->bIsClicked = false;
-				//UE_LOG(LogTemp, Warning, TEXT("Clicked is now false."));
-			}
 		}
-		else if (HitPiece->bIsClicked == true) {
-			HitPiece->bIsClicked = false;
-		}
-
+		PreviousHit = HitPiece;
 	}
-
+	else if (PreviousHit) 
+	{
+			PreviousHit->bIsClicked = false;
+	}
 }
 
 

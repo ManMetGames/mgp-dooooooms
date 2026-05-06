@@ -56,9 +56,7 @@ public:
 	/** Constructor */
 	AMGP_2526Character();	
 
-	FVector mousepos;
-	FVector mousedir;
-
+	APuzzlePiece* PreviousHit;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ClickAction;
 
