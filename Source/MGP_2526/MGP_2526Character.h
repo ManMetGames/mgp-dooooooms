@@ -6,7 +6,6 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "MGP_2526Character.generated.h"
-
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
@@ -32,7 +31,7 @@ class AMGP_2526Character : public ACharacter
 	UCameraComponent* FollowCamera;
 	
 protected:
-
+	virtual void BeginPlay() override;
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* JumpAction;
@@ -41,6 +40,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MoveAction;
 
+	void OnClicked();
+	void OnFlipped();
+	void OnRotated();
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* LookAction;
@@ -53,6 +55,16 @@ public:
 
 	/** Constructor */
 	AMGP_2526Character();	
+
+	TArray<TSubclassOf<AActor*>> Pieces;
+	//APuzzlePiece* PreviousHit;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClickAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FlipAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* RotateAction;
 
 protected:
 
@@ -85,12 +97,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
 
-public:
 
+
+public:
+	virtual void Tick(float DeltaTime) override;
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	float FollowTime;
+
 };
 
