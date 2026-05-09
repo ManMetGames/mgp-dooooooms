@@ -22,8 +22,12 @@ public:
 	FVector CurrentPos;
 	FVector PickupPos;
 	FVector LerpPos;
+	FQuat CurrentRotation;
+	FQuat LerpRot;
+	FQuat TargetRot;
 	void Grab();
-
+	void Flip();
+	void Rotate();
 	UPROPERTY(BlueprintReadWRite, EditAnywhere)
 	TSubclassOf<APuzzlePiece> PieceClass;
 
@@ -39,6 +43,7 @@ public:
 	// Called every frame
 	float Timer;
 	virtual void Tick(float DeltaTime) override;
-	
+	bool bIsFlipped;
+	bool bIsRotated;
 	bool bIsClicked;
 };

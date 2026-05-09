@@ -61,6 +61,8 @@ void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	{
 		// Setup mouse input events
 		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnClicked);
+		EnhancedInputComponent->BindAction(FlipAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnFlipped);
+		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnRotated);
 		UE_LOG(LogTemp, Warning, TEXT("Inputs are bound"));
 	}
 
@@ -73,6 +75,7 @@ void AMGP_2526Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	
 	//AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
 	//Ctl->DeprojectMousePositionToWorld(mousepos, mousedir);
 
@@ -82,18 +85,20 @@ void AMGP_2526Character::Tick(float DeltaTime)
 
 void AMGP_2526Character::BeginPlay()
 {
-	
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "Piece", Pieces);
 	APuzzlePiece* PreviousHit = nullptr;
 }
+
+
 
 void AMGP_2526Character::OnClicked() {
 	FHitResult Hit;
 	bool bHitSuccessful = false;
 
 	AMGP_2526PlayerController* Ctl = Cast<AMGP_2526PlayerController>(GetController());
-	TArray<AActor*> Pieces;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APuzzlePiece::StaticClass(), Pieces);
-	//UGameplayStatics::GetAllActorsWithTag(GetWorld(), "Piece", Pieces);
+
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), APuzzlePiece::StaticClass(), Pieces);
+
 	bHitSuccessful = Ctl->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 	
 	if (Hit.GetActor()->ActorHasTag("Piece"))
@@ -104,7 +109,7 @@ void AMGP_2526Character::OnClicked() {
 			if (HitPiece->bIsClicked==false) {
 
 				HitPiece->bIsClicked = true;
-				PreviousHit = HitPiece;
+				//PreviousHit = HitPiece;
 				//UE_LOG(LogTemp, Warning, TEXT("Clicked is now true."));
 			}
 			else if (HitPiece->bIsClicked == true) 
@@ -112,11 +117,49 @@ void AMGP_2526Character::OnClicked() {
 				HitPiece->bIsClicked = false;
 			}
 		}
-		PreviousHit = HitPiece;
+		//PreviousHit = HitPiece;
 	}
-	else if (PreviousHit) 
+	//else if (PreviousHit) 
+	//{
+	//		PreviousHit->bIsClicked = false;
+	//}
+}
+
+void AMGP_2526Character::OnFlipped()
+{
+	//AActor* OtherActor = nullptr;
+	//APuzzlePiece* Piece = Cast<APuzzlePiece>(OtherActor);
+	//if (Piece != nullptr) {
+	//	if (Piece->bIsClicked == true) {
+	//		Piece->Flip();
+	//	}
+	//}
+
+	AActor* OtherActor = nullptr;
+	APuzzlePiece* Piece = Cast<APuzzlePiece>(OtherActor);
+	if (Piece != nullptr) {
+		if (Piece->bIsClicked == true) {
+			Piece->Flip();
+		}
+	}
+}
+
+void AMGP_2526Character::OnRotated()
+{
+	//AActor* OtherActor = nullptr;
+	//APuzzlePiece* Piece = Cast<APuzzlePiece>(OtherActor);
+	//if (Piece != nullptr;) {
+	//	if (Piece->bIsClicked == true) {
+	//		Piece->Rotate();
+	//	}
+	//}
+
+	for(int i=0; Pieces.Num(); i++)
 	{
-			PreviousHit->bIsClicked = false;
+		AActor* Piece = Pieces[i];
+			if (Piece->bIsClicked == true) {
+
+			}
 	}
 }
 

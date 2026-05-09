@@ -33,13 +33,41 @@ void APuzzlePiece::Grab()
 	CurrentPos = GetActorLocation();
 	LerpPos = FMath::VInterpTo(CurrentPos, PickupPos, Timer, 0.75);
 	SetActorLocation(LerpPos);
+
+
 	UE_LOG(LogTemp, Warning, TEXT("CurrentPos: %s"), *CurrentPos.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("SpawnVector: %s"), *SpawnVector.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("PickupPos: %s"), *PickupPos.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("Lerppos: %s"), *LerpPos.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("CurrentRotation: %s"), *CurrentRotation.ToString());
 }
 
+void APuzzlePiece::Rotate()
+{
+	CurrentRotation = GetActorQuat();
+	int Multiplier;
+	//if (fmod(CurrentRotation.Z, 90)==0) {
+	//	Multiplier = CurrentRotation.Z / 90;
+	//}
+	//else {
+		Multiplier = floor(CurrentRotation.Z / 90);
+	//}
+		TargetRot = CurrentRotation;
+		TargetRot.Z = 90 * Multiplier;
+	LerpRot = FQuat::Slerp(CurrentRotation,TargetRot, 0.75);
+	SetActorRotation(LerpRot);
+}
 
+void APuzzlePiece::Flip()
+{
+	CurrentRotation = GetActorQuat();
+	int Multiplier;
+	Multiplier = floor(CurrentRotation.X / 90);
+	TargetRot = CurrentRotation;
+	TargetRot.X = 90 * Multiplier;
+	LerpRot = FQuat::Slerp(CurrentRotation, TargetRot, 0.75);
+	SetActorRotation(LerpRot);
+}
 
 // Called when the game starts or when spawned
 void APuzzlePiece::BeginPlay()
@@ -70,5 +98,18 @@ void APuzzlePiece::Tick(float DeltaTime)
 		LerpPos = FMath::VInterpTo(CurrentPos, SpawnVector, Timer, 0.75);
 		SetActorLocation(LerpPos);
 	}
+	
+
+	if (bIsFlipped) {
+		Flip();
+	}
+	else if (bIsRotated) {
+		Rotate();
+	}
+	else {
+		CurrentRotation = GetActorQuat();
+	}
+
+
 }
 

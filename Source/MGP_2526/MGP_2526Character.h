@@ -6,7 +6,6 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "MGP_2526Character.generated.h"
-
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
@@ -42,7 +41,8 @@ protected:
 	UInputAction* MoveAction;
 
 	void OnClicked();
-
+	void OnFlipped();
+	void OnRotated();
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* LookAction;
@@ -56,9 +56,15 @@ public:
 	/** Constructor */
 	AMGP_2526Character();	
 
-	APuzzlePiece* PreviousHit;
+	TArray<TSubclassOf<AActor*>> Pieces;
+	//APuzzlePiece* PreviousHit;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ClickAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FlipAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* RotateAction;
 
 protected:
 
@@ -90,6 +96,8 @@ public:
 	/** Handles jump pressed inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+
+
 
 public:
 	virtual void Tick(float DeltaTime) override;
